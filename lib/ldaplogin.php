@@ -44,21 +44,19 @@ class LDAPLogin {
         if ($sr) {
             $e = @ldap_get_entries($ldapc, $sr);
             $e = ($e["count"] == 1 ? $e[0] : array());
-            if (isset($e["cn"]) && $e["cn"]["count"] == 1) {
-                list($qreq->firstName, $qreq->lastName) = Text::split_name($e["cn"][0]);
-            }
             if (isset($e["sn"]) && $e["sn"]["count"] == 1) {
                 $qreq->lastName = $e["sn"][0];
             }
-            if (isset($e["givenname"]) && $e["givenname"]["count"] == 1) {
-                $qreq->firstName = $e["givenname"][0];
+            if (isset($e["imvorname"]) && $e["imvorname"]["count"] == 1) {
+                $qreq->firstName = $e["imvorname"][0];
             }
-            if (isset($e["mail"]) && $e["mail"]["count"] == 1) {
-                $qreq->preferredEmail = $e["mail"][0];
+            if (isset($e["imhauptemail"]) && $e["imhauptemail"]["count"] == 1) {
+                $qreq->preferredEmail = $e["imhauptemail"][0];
             }
             if (isset($e["telephonenumber"]) && $e["telephonenumber"]["count"] == 1) {
                 $qreq->phone = $e["telephonenumber"][0];
             }
+            $qreq->email = $e["cn"][0]."@mytum.de";
         }
 
         ldap_close($ldapc);
